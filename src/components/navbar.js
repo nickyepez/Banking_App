@@ -6,6 +6,7 @@ import { useNavigate } from "react-router";
 export const BankNavBar = ({ user, onLogOut }) => {
 
     const [ isLoggedIn, updateLoggedIn ] = useState(user !== null && user !== undefined)
+    const path = window.location.pathname
 
     useEffect(() => {
         if (user) {
@@ -19,8 +20,16 @@ export const BankNavBar = ({ user, onLogOut }) => {
         navigate('/createAccount')
     }
 
-    const login= () => {
-        navigate('/')
+    // const login= () => {
+    //     navigate('/')
+    // }
+
+    const deposit= () => {
+        navigate('/deposit')
+    }
+
+    const withdraw= () => {
+        navigate('/withdraw')
     }
 
     const allData= () => {
@@ -38,23 +47,29 @@ export const BankNavBar = ({ user, onLogOut }) => {
             <Navbar.Toggle/>
             <Nav>
                 {isLoggedIn &&<Navbar.Collapse>
-                        <Nav.Item className="nav-item" data-toggle="tooltip" data-placement="bottom" title="Welcome">
-                            Welcome {user?.name}
-                        </Nav.Item>
-                        <Nav.Link className="nav-item" data-toggle="tooltip" data-placement="bottom" title="All Data Page" onClick={allData}>
+                        <Nav.Link active={path.includes("deposit")} className="nav-item" data-toggle="tooltip" data-placement="bottom" title="Deposit Page" onClick={deposit}>
+                            Deposit
+                        </Nav.Link>
+                        <Nav.Link active={path.includes("withdraw")} className="nav-item" data-toggle="tooltip" data-placement="bottom" title="Withdraw Page" onClick={withdraw}>
+                            Withdraw
+                        </Nav.Link>
+                        <Nav.Link active={path.includes("alldata")} className="nav-item" data-toggle="tooltip" data-placement="bottom" title="All Data Page" onClick={allData}>
                             All Data
                         </Nav.Link>
                         <Nav.Link className="nav-item" data-toggle="tooltip" data-placement="bottom" title="Log Out Page" onClick={logOut}>
                             Log out
                         </Nav.Link>
+                        {/* <Nav.Item className="nav-item text-white" >
+                            Welcome {user?.name}
+                        </Nav.Item> */}
                 </Navbar.Collapse>}
                 {!isLoggedIn &&<Navbar.Collapse className="justify-content-end">
                         <Nav.Link className="nav-item" data-toggle="tooltip" data-placement="bottom" title="Create Account Page" onClick={createAccount}>
                             Create Account
                         </Nav.Link>
-                        <Nav.Link onClick={login}>
+                        {/* <Nav.Link onClick={login}>
                             Login
-                        </Nav.Link>
+                        </Nav.Link> */}
                 </Navbar.Collapse>}
             </Nav>
         </Container>

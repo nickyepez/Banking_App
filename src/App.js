@@ -14,6 +14,7 @@ function App({ loggedInUser }) {
   const logOut = () => {
     updateUser(undefined);
     localStorage.removeItem('activeEmail')
+    window.location =  window.location
   }
 
   const loggedIn = (user) => {
@@ -24,6 +25,7 @@ function App({ loggedInUser }) {
   const onDeposit = (amount) => {
     updateUser(user => {
       user.balance = Number(amount) + Number(user.balance)
+      user.transactions.push({type:"DEPOSIT", amount:amount, date:new Date().toDateString()})
       
       const accounts = JSON.parse(localStorage.getItem('accounts') ?? '[]');    
       const index = accounts.findIndex(u => u.email === user.email);
@@ -39,6 +41,7 @@ function App({ loggedInUser }) {
   const onWithdraw = (amount) => {
     updateUser(user => {
       user.balance = Number(user.balance) - Number(amount)
+      user.transactions.push({type:"WITHDRAW", amount:amount, date:new Date().toDateString()})
 
       const accounts = JSON.parse(localStorage.getItem('accounts') ?? '[]');    
       const index = accounts.findIndex(u => u.email === user.email);

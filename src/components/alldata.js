@@ -1,37 +1,37 @@
-import React, { useState } from 'react';
+import { Card } from "react-bootstrap"
 
-export function AllData(){
-  const [submissions, setSubmissions] = useState([]);
-  const handleFormSubmit = (e) => {
-    e.preventDefault();
-    const formData = new FormData(e.target);
-    const newSubmission = {
-      name: formData.get('name'),
-      email: formData.get('email'),
-      password: formData.get('password'),
-      balance: formData.get('balance'),
-    };
-    setSubmissions([...submissions, newSubmission]);
-    e.target.reset();
-  };
-
-  return (
-      <div className="container">
-        <h1>All Data</h1>
-        <form onSubmit={handleFormSubmit}>
-          <div className="form-group">
-            <label htmlFor="name">Name</label>
-            <input type="text" className="form-control" id="name" name="name" />
-          </div>
-          <div className="form-group">
-            <label htmlFor="email">Email address</label>
-            <input type="email" className="form-control" id="email" name="email" />
-          </div>
-          <div className="form-group">
-            <label htmlFor="message">Message</label>
-            <textarea className="form-control" id="message" name="message" rows="3"></textarea>
-          </div>
-        </form>
-      </div>
-  );
+export function AllData({user}){
+  return <Card className="col-4 offset-4 mt-5" style={{ width: '30rem' }}>
+      <Card.Body>
+          <Card.Title>
+            Name: { user?.name }
+          </Card.Title>
+          <Card.Text>
+              Your email is: {user.email} 
+          </Card.Text>
+          <Card.Text>
+              Your current balance is: ${user?.balance} 
+          </Card.Text>
+          {/* {user.transactions.map(e => <p class="text-danger">{JSON.stringify(e)}</p>)} */}
+          <table className="table">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Transaction</th>
+              <th scope="col">Amount</th>
+              <th scope="col">Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            {user.transactions.map((t, i) => <tr key={i}>
+              <th scope="row">{i+1}</th>
+              <td>{t.type}</td>
+              <td className={t.type === 'DEPOSIT' ? 'text-success' : 'text-danger'}>{t.amount}</td>
+              <td>{t.date}</td>
+            </tr>)}
+          </tbody>
+        </table>
+      </Card.Body>
+    </Card>
 }
+
