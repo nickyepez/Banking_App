@@ -1,0 +1,41 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-bankingappserverless-dev-185227-authRole",
+      "UnauthRoleArn": "arn:aws:iam::036241569469:role/amplify-bankingappserverless-dev-185227-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::036241569469:role/amplify-bankingappserverless-dev-185227-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-bankingappserverless-dev-185227-deployment",
+      "UnauthRoleName": "amplify-bankingappserverless-dev-185227-unauthRole",
+      "StackName": "amplify-bankingappserverless-dev-185227",
+      "StackId": "arn:aws:cloudformation:us-east-1:036241569469:stack/amplify-bankingappserverless-dev-185227/615ceca0-f769-11ed-b7f7-0ab309d13c4b",
+      "AmplifyAppId": "d3e5cvfqsnuqy5",
+      "AuthTriggerTemplateURL": "https://s3.amazonaws.com/amplify-bankingappserverless-dev-185227-deployment/amplify-cfn-templates/auth/auth-trigger-cloudformation-template.json",
+      "APIGatewayAuthURL": "https://s3.amazonaws.com/amplify-bankingappserverless-dev-185227-deployment/amplify-cfn-templates/api/APIGatewayAuthStack.json"
+    },
+    "categories": {
+      "auth": {
+        "bankingappserverlesse8bc2750": {}
+      },
+      "function": {
+        "bankingappserverlesse8bc2750CustomMessage": {
+          "REDIRECTURL": "http://localhost:3000",
+          "EMAILSUBJECT": "NY Banking App Confimration Code",
+          "EMAILMESSAGE": "Your confirmation code is",
+          "deploymentBucketName": "amplify-bankingappserverless-dev-185227-deployment",
+          "s3Key": "amplify-builds/bankingappserverlesse8bc2750CustomMessage-3059373668684663447a-build.zip"
+        },
+        "usershandler": {
+          "deploymentBucketName": "amplify-bankingappserverless-dev-185227-deployment",
+          "s3Key": "amplify-builds/usershandler-375a4d44584b2b716f77-build.zip"
+        }
+      },
+      "api": {
+        "user": {}
+      },
+      "storage": {
+        "Users": {}
+      }
+    }
+  }
+}

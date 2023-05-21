@@ -1,0 +1,148 @@
+{
+  "api": {
+    "user": {
+      "dependsOn": [
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "usershandler"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "API Gateway"
+    }
+  },
+  "auth": {
+    "bankingappserverlesse8bc2750": {
+      "customAuth": false,
+      "dependsOn": [
+        {
+          "attributes": [
+            "Arn",
+            "Name"
+          ],
+          "category": "function",
+          "resourceName": "bankingappserverlesse8bc2750CustomMessage",
+          "triggerProvider": "Cognito"
+        }
+      ],
+      "frontendAuthConfig": {
+        "mfaConfiguration": "OFF",
+        "mfaTypes": [
+          "SMS"
+        ],
+        "passwordProtectionSettings": {
+          "passwordPolicyCharacters": [],
+          "passwordPolicyMinLength": 8
+        },
+        "signupAttributes": [
+          "EMAIL",
+          "FAMILY_NAME",
+          "NAME"
+        ],
+        "socialProviders": [],
+        "usernameAttributes": [
+          "EMAIL"
+        ],
+        "verificationMechanisms": [
+          "EMAIL"
+        ]
+      },
+      "providerPlugin": "awscloudformation",
+      "service": "Cognito"
+    }
+  },
+  "function": {
+    "bankingappserverlesse8bc2750CustomMessage": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "usershandler": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributeEnvMap": {
+            "Arn": "TABLE_ARN",
+            "Name": "TABLE_NAME"
+          },
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "storage",
+          "resourceName": "Users"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    }
+  },
+  "parameters": {
+    "AMPLIFY_function_bankingappserverlesse8bc2750CustomMessage_EMAILMESSAGE": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "bankingappserverlesse8bc2750CustomMessage"
+        }
+      ]
+    },
+    "AMPLIFY_function_bankingappserverlesse8bc2750CustomMessage_EMAILSUBJECT": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "bankingappserverlesse8bc2750CustomMessage"
+        }
+      ]
+    },
+    "AMPLIFY_function_bankingappserverlesse8bc2750CustomMessage_REDIRECTURL": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "bankingappserverlesse8bc2750CustomMessage"
+        }
+      ]
+    },
+    "AMPLIFY_function_bankingappserverlesse8bc2750CustomMessage_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "bankingappserverlesse8bc2750CustomMessage"
+        }
+      ]
+    },
+    "AMPLIFY_function_bankingappserverlesse8bc2750CustomMessage_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "bankingappserverlesse8bc2750CustomMessage"
+        }
+      ]
+    },
+    "AMPLIFY_function_usershandler_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "usershandler"
+        }
+      ]
+    },
+    "AMPLIFY_function_usershandler_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "usershandler"
+        }
+      ]
+    }
+  },
+  "storage": {
+    "Users": {
+      "providerPlugin": "awscloudformation",
+      "service": "DynamoDB"
+    }
+  }
+}
