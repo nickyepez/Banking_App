@@ -4,22 +4,18 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
+import '@aws-amplify/ui-react/styles.css';
 
-const loggedInEmail = localStorage.getItem('activeEmail')
+import { Amplify } from 'aws-amplify';
+import awsExports from './aws-exports';
 
-let loggedInUser = undefined;
-
-if (loggedInEmail) {
-    const accounts = JSON.parse(localStorage.getItem('accounts') ?? '[]');    
-    loggedInUser = accounts.find(u => u.email === loggedInEmail);
-    console.log(loggedInUser)
-}
+Amplify.configure(awsExports);
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <App loggedInUser={loggedInUser} />
+    <App />
   </React.StrictMode>
 );
 

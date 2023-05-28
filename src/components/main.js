@@ -14,7 +14,7 @@ export const Main = ({ user }) => {
             <Card className="col-4 offset-4 mt-5">
                 <Card.Img variant="top" src="https://thumbs.dreamstime.com/b/money-transfer-global-currency-stock-exchange-financial-background-stock-market-concept-global-currency-technology-background-153250964.jpg" />
                 <Card.Body>
-                    <Card.Title>{ user?.name }</Card.Title>
+                    <Card.Title>{ user.attributes.name } { user.attributes.family_name}</Card.Title>
                     <Card.Text>
                         Your current balance is: 
                     </Card.Text>

@@ -1,18 +1,21 @@
+import { useState } from "react"
 import { Card } from "react-bootstrap"
 
 export function AllData({user}){
+  const [balance, updateBalance ] = useState(0);
+  const [transactions, updateTransactions] = useState([]);
+
   return <Card className="col-4 offset-4 mt-5" style={{ width: '30rem' }}>
       <Card.Body>
           <Card.Title>
-            Name: { user?.name }
+            Name: { user?.attributes.name }
           </Card.Title>
           <Card.Text>
-              Your email is: {user.email} 
+              Your email is: {user.attributes.email} 
           </Card.Text>
           <Card.Text>
-              Your current balance is: ${user?.balance} 
+              Your current balance is: ${balance} 
           </Card.Text>
-          {/* {user.transactions.map(e => <p class="text-danger">{JSON.stringify(e)}</p>)} */}
           <table className="table">
           <thead>
             <tr>
@@ -23,7 +26,7 @@ export function AllData({user}){
             </tr>
           </thead>
           <tbody>
-            {user.transactions.map((t, i) => <tr key={i}>
+            {transactions.map((t, i) => <tr key={i}>
               <th scope="row">{i+1}</th>
               <td>{t.type}</td>
               <td className={t.type === 'DEPOSIT' ? 'text-success' : 'text-danger'}>{t.amount}</td>
