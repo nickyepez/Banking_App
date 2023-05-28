@@ -1,11 +1,14 @@
 import { useState, useEffect } from "react";
 import { Container, Card, Form, Button, Alert } from "react-bootstrap"
 import { useNavigate } from "react-router";
+import { API, Auth } from 'aws-amplify'
+import { useBalance } from "../hooks/useBalance";
 
-export const Deposit = ({ onDeposit, user }) => {
+export const Deposit = ({ user }) => {
     const [amount, updateAmount] = useState('')
     const [error, updateError] = useState(undefined)
     const [showSuccess, updateShowSuccess] = useState(-1)
+    const { balance } = useBalance(user.attributes.sub)
 
     const navigate = useNavigate();
 
@@ -23,7 +26,17 @@ export const Deposit = ({ onDeposit, user }) => {
         }
     }, [showSuccess, updateShowSuccess])
 
-    const deposit = () => {
+    const postDeposit = async (transaction) => {
+        const headers = {
+            Authorization: `Bearer ${(await Auth.currentSession())
+            .getIdToken()
+            .getJwtToken()}`
+        };
+
+        await API.post('Transaction', '/transactions', { body: transaction, headers })
+    }
+
+    const deposit = async () => {
         if (isNaN(amount)) updateError ('Not a Number')
         if (Number(amount) < 0) updateError('Amount needs to be positive');
         if (!amount) updateError('Amount is required')
@@ -31,9 +44,25 @@ export const Deposit = ({ onDeposit, user }) => {
         if (Number(amount) >0 && !isNaN(amount)) {
             updateError(undefined)
             updateAmount(0)
-            onDeposit(amount)
 
-            updateShowSuccess(amount)
+            const transaction = {
+                userId: user.attributes.sub,
+                timestamp: Date.now(),
+                type: 'DEPOSIT',
+                amount
+            }
+
+            try {
+                await postDeposit(transaction);
+                updateShowSuccess(amount)
+
+                setTimeout(() => {
+                    navigate('../')
+                }, 1000)
+            } catch (error) {
+                updateError('Transaction failed to create, please try again')
+                throw error;
+            }
         }
     };
 
@@ -42,7 +71,7 @@ export const Deposit = ({ onDeposit, user }) => {
         <Card className="col-4 offset-4 mt-5">
             <Card.Header className="text-center">
                 Your current balance is:
-                { new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(user?.balance) } 
+                { new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(balance) } 
             </Card.Header>
                 <Card.Body>
                     {showSuccess > 0 && <Alert>Successfully deposited ${showSuccess}</Alert>}

@@ -1,9 +1,11 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router"
 import { Container, Card } from "react-bootstrap"
+import { useBalance } from "../hooks/useBalance";
 
 export const Main = ({ user }) => {
     const navigate = useNavigate();
+    const { balance } = useBalance(user.attributes.sub)
 
     useEffect(() => {
         if (!user) navigate('/')
@@ -19,7 +21,7 @@ export const Main = ({ user }) => {
                         Your current balance is: 
                     </Card.Text>
                     <Card.Text>
-                    { new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(user?.balance) }
+                    { new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(balance) }
                     </Card.Text>
                 </Card.Body>
                 <Card.Body>

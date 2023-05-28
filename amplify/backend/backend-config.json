@@ -1,5 +1,19 @@
 {
   "api": {
+    "Transaction": {
+      "dependsOn": [
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "transactionHandler"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "API Gateway"
+    },
     "user": {
       "dependsOn": [
         {
@@ -58,6 +72,25 @@
   "function": {
     "bankingappserverlesse8bc2750CustomMessage": {
       "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "transactionHandler": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributeEnvMap": {
+            "Arn": "TABLE_ARN",
+            "Name": "TABLE_NAME"
+          },
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "storage",
+          "resourceName": "Transactions"
+        }
+      ],
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
@@ -122,6 +155,22 @@
         }
       ]
     },
+    "AMPLIFY_function_transactionHandler_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "transactionHandler"
+        }
+      ]
+    },
+    "AMPLIFY_function_transactionHandler_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "transactionHandler"
+        }
+      ]
+    },
     "AMPLIFY_function_usershandler_deploymentBucketName": {
       "usedBy": [
         {
@@ -140,6 +189,10 @@
     }
   },
   "storage": {
+    "Transactions": {
+      "providerPlugin": "awscloudformation",
+      "service": "DynamoDB"
+    },
     "Users": {
       "providerPlugin": "awscloudformation",
       "service": "DynamoDB"

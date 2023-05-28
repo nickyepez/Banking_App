@@ -28,13 +28,19 @@
         "usershandler": {
           "deploymentBucketName": "amplify-bankingappserverless-dev-185227-deployment",
           "s3Key": "amplify-builds/usershandler-375a4d44584b2b716f77-build.zip"
+        },
+        "transactionHandler": {
+          "deploymentBucketName": "amplify-bankingappserverless-dev-185227-deployment",
+          "s3Key": "amplify-builds/transactionHandler-41624d324d4465385353-build.zip"
         }
       },
       "api": {
-        "user": {}
+        "user": {},
+        "Transaction": {}
       },
       "storage": {
-        "Users": {}
+        "Users": {},
+        "Transactions": {}
       }
     }
   }

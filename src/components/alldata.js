@@ -1,9 +1,11 @@
-import { useState } from "react"
 import { Card } from "react-bootstrap"
 
+import { useBalance } from "../hooks/useBalance";
+import { useTransactions } from "../hooks/useTransactions";
+
 export function AllData({user}){
-  const [balance, updateBalance ] = useState(0);
-  const [transactions, updateTransactions] = useState([]);
+  const { transactions } = useTransactions(user.attributes.sub);
+  const { balance } = useBalance(user.attributes.sub);
 
   return <Card className="col-4 offset-4 mt-5" style={{ width: '30rem' }}>
       <Card.Body>

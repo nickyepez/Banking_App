@@ -1,12 +1,15 @@
 import { useEffect, useState } from "react";
 import { Container, Card, Form, Button, Alert } from "react-bootstrap"
 import { useNavigate } from "react-router";
+import { API, Auth } from 'aws-amplify'
+import { useBalance } from "../hooks/useBalance";
 
-export const Withdraw = ({ onWithdraw, user }) => {
+export const Withdraw = ({ user }) => {
     const [amount, updateAmount] = useState('')
     const [error, updateError] = useState(undefined)
     const [showSuccess, updateShowSuccess] = useState(-1)
 
+    const { balance,  } = useBalance(user.attributes.sub);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -23,40 +26,46 @@ export const Withdraw = ({ onWithdraw, user }) => {
         }
     }, [showSuccess, updateShowSuccess])
 
-    const withdraw = () => {
+    const postWithdrawal = async (transaction) => {
+        const headers = {
+            Authorization: `Bearer ${(await Auth.currentSession())
+            .getIdToken()
+            .getJwtToken()}`
+        };
+
+        await API.post('Transaction', '/transactions', { body: transaction, headers })
+    }
+
+    const withdraw = async () => {
         if (isNaN(amount)) updateError ('Not a Number')
         if (Number(amount) < 0) updateError('Amount needs to be positive');
         if (!amount) updateError('Amount is required')
-        if (Number(amount) > Number(user?.balance)) updateError('Insufficient Funds');
-
-        if (Number(amount) > 0 && !isNaN(amount) && (Number(amount) <= Number(user?.balance))) {
+        if (Number(amount) > Number(balance)) updateError('Insufficient Funds');
+        
+        if (Number(amount) > 0 && !isNaN(amount) && (Number(amount) <= Number(balance))) {
+            console.log('clicked')
             updateError(undefined)
             updateAmount(0)
-            onWithdraw(amount)
 
-            updateShowSuccess(amount)
+            const transaction = {
+                userId: user.attributes.sub,
+                timestamp: Date.now(),
+                type: 'WITHDRAWAL',
+                amount
+            }
+
+            try {
+                await postWithdrawal(transaction);
+                updateShowSuccess(amount)
+
+                setTimeout(() => {
+                    navigate('../')
+                }, 1000)
+            } catch (error) {
+                updateError('Transaction failed to create, please try again')
+                throw error;
+            }
         }
-
-        // if (amount < 0) {
-        //     updateError('Amount needs to be positive')
-        //     return;
-        // };
-
-        // if (!amount) {
-        //     updateError('Amount is required')
-        //     return;
-        // }
-
-        // if (amount > user?.balance) {
-        //     updateError('Insufficient funds')
-        //     return;
-        // }
-
-        // updateError(undefined)
-        // updateAmount(0)
-        // onWithdraw(amount)
-
-        // navigate('/account')
     };
 
     return (
@@ -64,7 +73,7 @@ export const Withdraw = ({ onWithdraw, user }) => {
         <Card className="col-4 offset-4 mt-5">
             <Card.Header className="text-center">
                     Your current balance is:
-                    { new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(user?.balance) }
+                    { new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(balance) }
             </Card.Header>
                 <Card.Body>
                 {showSuccess > 0 && <Alert>Successfully withdraw ${showSuccess}</Alert>}

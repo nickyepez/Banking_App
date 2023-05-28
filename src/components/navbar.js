@@ -16,14 +16,6 @@ export const BankNavBar = ({ user, onLogOut }) => {
 
     const navigate = useNavigate();
 
-    const createAccount= () => {
-        navigate('/createAccount')
-    }
-
-    // const login= () => {
-    //     navigate('/')
-    // }
-
     const deposit= () => {
         navigate('/deposit')
     }
@@ -43,7 +35,7 @@ export const BankNavBar = ({ user, onLogOut }) => {
 
     return <Navbar className="navbar navbar-expand-lg navbar-dark bg-dark">
         <Container>
-            <Navbar.Brand className="nav-item" data-toggle="tooltip" data-placement="bottom" title="Home Page" onClick={() => navigate('/account')}>Home</Navbar.Brand>
+            <Navbar.Brand className="nav-item" data-toggle="tooltip" data-placement="bottom" title="Home Page" onClick={() => navigate('/')}>Home</Navbar.Brand>
             <Navbar.Toggle/>
             <Nav>
                 {isLoggedIn &&<Navbar.Collapse>
@@ -59,17 +51,6 @@ export const BankNavBar = ({ user, onLogOut }) => {
                         <Nav.Link className="nav-item" data-toggle="tooltip" data-placement="bottom" title="Log Out Page" onClick={logOut}>
                             Log out
                         </Nav.Link>
-                        {/* <Nav.Item className="nav-item text-white" >
-                            Welcome {user?.name}
-                        </Nav.Item> */}
-                </Navbar.Collapse>}
-                {!isLoggedIn &&<Navbar.Collapse className="justify-content-end">
-                        <Nav.Link className="nav-item" data-toggle="tooltip" data-placement="bottom" title="Create Account Page" onClick={createAccount}>
-                            Create Account
-                        </Nav.Link>
-                        {/* <Nav.Link onClick={login}>
-                            Login
-                        </Nav.Link> */}
                 </Navbar.Collapse>}
             </Nav>
         </Container>
