@@ -8,22 +8,32 @@ import { Authenticator } from "@aws-amplify/ui-react";
 
 
 function App() {
+  const formFields = {
+    signIn: {
+      username: {
+        placeholder: 'Enter Your Email Here',
+        isRequired: true,
+        label: 'Email:'
+      },
+    },
+  };
+
   return (
     <BrowserRouter>
-      <Authenticator>
+      <Authenticator formFields={formFields}>
         {({ signOut, user }) => (
           <main>
             <BankNavBar onLogOut={signOut} user={user} />
             <Routes>
-              <Route path="/" element={<Main user={user}/>} />
+              <Route path="/" element={<Main user={user} />} />
               <Route path="/deposit" element={<Deposit user={user} />} />
               <Route path="/withdraw" element={<Withdraw user={user} />} />
-              <Route path="/alldata" element={<AllData user={user}/>}/>
+              <Route path="/alldata" element={<AllData user={user} />} />
             </Routes>
-          </main>         
-        )}  
-       </Authenticator>
-      </BrowserRouter>
+          </main>
+        )}
+      </Authenticator>
+    </BrowserRouter>
   );
 }
 
